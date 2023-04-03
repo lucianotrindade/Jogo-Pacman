@@ -16,9 +16,11 @@ tela = pygame.display.set_mode((largura_tela, altura_tela), 0, 0)
 #Criando o pacman
 class pacman:
     def __init__(self):
+        self.coluna = 1
+        self.linha = 1
         self.centro_x = largura_tela // 2  # onde vai iniciar o pacman
         self.centro_y = altura_tela // 2    # onde vai iniciar o pacman
-        self.tamanho = 50
+        self.tamanho = 800 // 30 # Quantidade de casas que o pacman vai percorrer
         self.raio = int(self.tamanho // 2)
         self.velocidade_x = 0.7
         self.velocidade_y = 0.7
@@ -42,13 +44,15 @@ class pacman:
 # Movimentando o pacman
     def Movimento_Pacman(self):
         # Movimento Horizontal
-        self.centro_x += self.velocidade_x
+        self.coluna += self.velocidade_x
+        self.centro_x = int(self.coluna * self.tamanho + self.raio)
         if self.centro_x + self.raio > largura_tela:
             self.velocidade_x -= 1
         if self.centro_x - self.raio < 0:
             self.velocidade_x += 1
         # Movimento Vertical
-        self.centro_y += self.velocidade_y
+        self.linha += self.velocidade_y
+        self.centro_y = int(self.linha * self.tamanho + self.raio)
         if self.centro_y + self.raio > altura_tela:
             self.velocidade_y -= 1
         if self.centro_y - self.raio < 0:
@@ -68,6 +72,7 @@ while True:
     tela.fill(preto) #limpa a tela e pinta de preto
     pacman.pintarPacman(tela)
     pygame.display.update()
+    pygame.time.delay(100)
 
     #Captura dos eventos
 
