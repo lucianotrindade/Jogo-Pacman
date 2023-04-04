@@ -8,6 +8,7 @@ largura_tela, altura_tela = 800, 600
 amarelo = (255, 255, 0)
 preto = (0, 0, 0)
 azul = (0, 0, 255)
+VELOCIDADE = 1
 
 
 #Criando a tela do jogo.
@@ -22,8 +23,8 @@ class pacman:
         self.centro_y = altura_tela // 2    # onde vai iniciar o pacman
         self.tamanho = 800 // 30 # Quantidade de casas que o pacman vai percorrer
         self.raio = int(self.tamanho // 2)
-        self.velocidade_x = 0.7
-        self.velocidade_y = 0.7
+        self.velocidade_x = 0
+        self.velocidade_y = 0
 
     def pintarPacman(self, tela):
         # Corpo do Pacman
@@ -46,17 +47,31 @@ class pacman:
         # Movimento Horizontal
         self.coluna += self.velocidade_x
         self.centro_x = int(self.coluna * self.tamanho + self.raio)
-        if self.centro_x + self.raio > largura_tela:
-            self.velocidade_x -= 1
-        if self.centro_x - self.raio < 0:
-            self.velocidade_x += 1
+
         # Movimento Vertical
         self.linha += self.velocidade_y
         self.centro_y = int(self.linha * self.tamanho + self.raio)
-        if self.centro_y + self.raio > altura_tela:
-            self.velocidade_y -= 1
-        if self.centro_y - self.raio < 0:
-            self.velocidade_y += 1
+    def ProcessarEventos (self, eventos):
+        for event in eventos:
+            if event.type == pygame.KEYDOWN: #Cada vez que apertar a tecla
+                if event.key == pygame.K_RIGHT:
+                    self.velocidade_x = VELOCIDADE
+                elif event.key == pygame.K_LEFT:
+                    self.velocidade_x = -VELOCIDADE
+                elif event.key == pygame.K_UP:
+                    self.velocidade_y = -VELOCIDADE
+                elif event.key == pygame.K_DOWN:
+                    self.velocidade_y = VELOCIDADE
+            elif event.type == pygame.KEYUP: #Cada Fez que soltar a tecla 
+                if event.key == pygame.K_RIGHT:
+                    self.velocidade_x = 0
+                elif event.key == pygame.K_LEFT:
+                    self.velocidade_x = 0
+                elif event.key == pygame.K_UP:
+                    self.velocidade_y = 0
+                elif event.key == pygame.K_DOWN:
+                    self.velocidade_y =0
+
 
 # simulando a classe Main
 if __name__ == "__main__":
@@ -75,9 +90,9 @@ while True:
     pygame.time.delay(100)
 
     #Captura dos eventos
-
-    for event in pygame.event.get():
+    eventos = pygame.event.get()
+    for event in eventos:
         if event.type == pygame.QUIT:
             exit()
-
+    pacman.ProcessarEventos(eventos)
 
