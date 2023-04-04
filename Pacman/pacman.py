@@ -8,11 +8,14 @@ largura_tela, altura_tela = 800, 600
 amarelo = (255, 255, 0)
 preto = (0, 0, 0)
 azul = (0, 0, 255)
+Transparente = (0, 0, 0, 0)
 VELOCIDADE = 1
 
 
 #Criando a tela do jogo.
 tela = pygame.display.set_mode((largura_tela, altura_tela), 0, 0)
+ImagemFundo = pygame.image.load('C:\Alura\Jogo_PACMAN_Py\Jogo-Pacman\Img\Fundo01.png')
+
 
 #Criando o pacman
 class pacman:
@@ -21,7 +24,7 @@ class pacman:
         self.linha = 1
         self.centro_x = largura_tela // 2  # onde vai iniciar o pacman
         self.centro_y = altura_tela // 2    # onde vai iniciar o pacman
-        self.tamanho = 800 // 30 # Quantidade de casas que o pacman vai percorrer
+        self.tamanho = 800 // 20 # Quantidade de casas que o pacman vai percorrer
         self.raio = int(self.tamanho // 2)
         self.velocidade_x = 0
         self.velocidade_y = 0
@@ -34,13 +37,17 @@ class pacman:
         labio_superior = (self.centro_x + self.raio, self.centro_y - self.raio)
         labio_inferior = (self.centro_x + self.raio, self.centro_y)
         pontos = [canto_boca, labio_superior, labio_inferior]
-        pygame.draw.polygon(tela, preto, pontos, 0)
+        pygame.draw.polygon(tela, Transparente, pontos, 0)
 
         # Olho do Pacman
         olho_x = int(self.centro_x + self.raio / 3)
         olho_y = int(self.centro_y - self.raio * 0.70)
         olho_raio = int(self.raio / 10 )
         pygame.draw.circle(tela, preto, (olho_x, olho_y), olho_raio, 0)
+
+
+
+
 
 # Movimentando o pacman
     def Movimento_Pacman(self):
@@ -62,7 +69,7 @@ class pacman:
                     self.velocidade_y = -VELOCIDADE
                 elif event.key == pygame.K_DOWN:
                     self.velocidade_y = VELOCIDADE
-            elif event.type == pygame.KEYUP: #Cada Fez que soltar a tecla 
+            elif event.type == pygame.KEYUP: #Cada Fez que soltar a tecla
                 if event.key == pygame.K_RIGHT:
                     self.velocidade_x = 0
                 elif event.key == pygame.K_LEFT:
@@ -84,10 +91,13 @@ while True:
     pacman.Movimento_Pacman()
 
     # Pintas a tela:
-    tela.fill(preto) #limpa a tela e pinta de preto
+    tela.blit(ImagemFundo, (0, 0))
+    #tela.fill(preto) #limpa a tela e pinta de preto
     pacman.pintarPacman(tela)
     pygame.display.update()
     pygame.time.delay(100)
+
+
 
     #Captura dos eventos
     eventos = pygame.event.get()
@@ -95,4 +105,6 @@ while True:
         if event.type == pygame.QUIT:
             exit()
     pacman.ProcessarEventos(eventos)
+
+
 
